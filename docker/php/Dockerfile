@@ -1,6 +1,9 @@
 FROM php:7.4.9-fpm
+FROM node:14
 
 COPY php.ini /usr/local/etc/php/
+COPY package*.json ./
+COPY . .
 
 RUN apt update \
   && apt install -y default-mysql-client zlib1g-dev libzip-dev unzip \
@@ -10,4 +13,10 @@ RUN curl -sS https://getcomposer.org/installer | php \
   && mv composer.phar /usr/local/bin/composer \
   && composer self-update
 
+RUN npm install
+RUN npm run dev
+
 WORKDIR /var/www
+WORKDIR /app
+
+CMD ["npm", "start"]

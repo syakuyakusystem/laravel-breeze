@@ -10,11 +10,18 @@ services:
       - ./src:/var/www/
     depends_on:
       - php
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+  environment:
+      - NODE_ENV=development
 
   php:
     build: ./docker/php
     volumes:
       - ./src:/var/www/
+      - .:/app
 
   mysql:
     image: mysql:8.0.26
